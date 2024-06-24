@@ -1,0 +1,135 @@
+'use strict'
+// Please don't delete the 'use strict' line above
+
+console.log(allPokemon);
+
+function test(actual, expected) {
+    if (JSON.stringify(actual) === JSON.stringify(expected)) {
+      console.log("OK! Test PASSED.");
+    } else {
+      console.error("Test FAILED. Try again!");
+      console.log("    actual: ", actual);
+      console.log("  expected: ", expected);
+      console.trace();
+    }
+  };
+
+
+console.log(allPokemon.length);
+console.log(allPokemon[0]);
+
+
+
+/**
+ * @returns {Array<string>} データ中のすべてのポケモンの名前を要素に持つ配列
+ */
+function getNames() {
+    const nameArray = [];
+    for (const element of allPokemon){
+        nameArray.push(element["Name"]);
+    }
+    return nameArray;
+}
+test(getNames(), getNamesExpected);
+
+
+/**
+ * @param {string} name - ポケモンの名前
+ * @returns {object} 与えられた名前を持つポケモンのオブジェクト
+ */
+function getPokemonByName(name){
+    
+    for ( const element of allPokemon){
+        if(element["Name"] === name){
+            return element;
+        }
+    }
+    
+}
+
+test(getPokemonByName("Pikachu"), getPokemonByNameExpected);
+
+
+/**
+ * @returns {number} 全ポケモンの最大CP（戦闘力）の平均値
+ */
+function getAvgMaxCP(){
+    let total = 0 ;
+    for (const element of allPokemon) {
+        total += element["MaxCP"];
+    }
+    return total / allPokemon.length;
+}
+// コンピュータは内部で 2 進法を使っているため、10 進法の小数点以下の計算で誤差がでることがあります。
+
+// そのため近似値であれば合格とします。期待値と全く同じでないとテストに通らずエラーが出てしまうので、テストをコメントアウトして外してください。
+
+test(getAvgMaxCP(), getAvgMaxCPExpected);
+
+
+/**
+ * @param {string} attack（技）
+ * @returns {Array<object>} 与えられた技に耐性がある、すべてのポケモンのオブジェクトが入った配列
+ */
+
+function getResistantPokemon(art){
+    const newArray = [];
+    for ( const element of allPokemon){
+        if(element["Resistant"].indexOf(art) !== -1){
+            newArray.push(element);
+        }
+    }
+    return newArray;
+}
+
+test(getResistantPokemon("Fire"), getResistantPokemonExpected);
+
+
+/**
+ * @param {string} attack（技）
+ * @returns {Array<string>} 与えられた技に耐性がある、すべてのポケモンの名前が入った配列
+ */
+function getResistantPokemonNames(Ice){
+    const newArray = [];
+    for (const element of allPokemon){
+        if(element["Resistant"].indexOf(Ice) !== -1){
+            newArray.push(element["Name"]);
+        }
+    }
+    return newArray;
+}
+
+test(getResistantPokemonNames("Ice"), getResistantPokemonNamesExpected);
+
+
+
+/**
+ * @returns {{ [weakness: string]: number }} 弱点とその弱点を持つポケモンの数の組み合わせをキーと値のペアで表現したオブジェクト
+ */
+function getWeaknessCounts(){
+    const weaknessObj = {};
+    for( const element of allPokemon){
+        for( const weak of element["Weaknesses"]){
+            if(weaknessObj[weak]){
+                weaknessObj[weak] ++
+            } else {
+                weaknessObj[weak] = 1;
+            }
+        }
+    }
+    return weaknessObj;
+}
+
+test(getWeaknessCounts(), getWeaknessCountsExpected);
+
+
+/**
+ * @returns {Array<string>} データ中のすべてのポケモンの名前を要素に持つ配列
+ */
+function getNames2(){
+    const newArray = [];
+    allPokemon.forEach((element) => newArray.push(element["Name"]));
+    return newArray;
+}
+
+test(getNames2(), getNamesExpected);
